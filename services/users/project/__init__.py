@@ -9,13 +9,13 @@ app = Flask(__name__)
 
 api = Api(app)
 
+# establecer configuración
+app.config.from_object("project.config.DevelopmentConfig")  # nuevo
+
 
 class UsersPing(Resource):
     def get(self):
-        return {
-        'status': 'success',
-        'message': 'pong!'
-    }
+        return {"status": "success", "message": "pong!"}
 
 
 api.add_resource(UsersPing, '/users/ping')
