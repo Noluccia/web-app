@@ -1,0 +1,38 @@
+# services/users/project/__init__.py
+
+import os
+from flask import Flask
+from flask_restful import Resource, Api
+from flask_sqlalchemy import SQLAlchemy
+
+# instantiate the app
+app = Flask(__name__)
+
+api = Api(app)
+
+# establecer configuración
+# app.config.from_object("project.config.DevelopmentConfig")  # nuevo
+app_settings = os.getenv('APP_SETTINGS')
+app.config.from_object(app_settings)
+
+# instanciando la db
+db = SQLAlchemy(app)
+
+# modelo
+   22 class User(db.Model):  # nuevo
+   23     __tablename__ = "users"
+   24     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+   25     username = db.Column(db.String(128), nullable=False)
+   26     email = db.Column(db.String(128), nullable=False)
+   27     active = db.Column(db.Boolean(), default=True, nullable=False)
+   28
+   29     def __init__(self, username, email):
+   30         self.username = username
+   31         self.email = email
+
+
+class UsersPing(Resource):
+    def get(self):
+        return {"status": "success", "message": "pong!"}
+
+api.add_resource(UsersPing, '/users/ping')

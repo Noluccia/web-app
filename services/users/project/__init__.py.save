@@ -1,0 +1,19 @@
+# services/users/project/__init__.py
+    2
+    3 from flask import Flask, jsonify
+    4 from flask_restful import Resource, Api
+    5
+    6 # instanciando la app app = Flask(__name__)
+
+api = Api(app)
+
+# establecer configuración
+app.config.from_object("project.config.DevelopmentConfig")  # nuevo
+
+
+class UsersPing(Resource):
+    def get(self):
+         return {"status": "success", "menssage": "pong!"}
+
+
+api.add_resource(UsersPing, "/users/ping")
